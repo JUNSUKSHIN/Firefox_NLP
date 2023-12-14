@@ -1,4 +1,4 @@
-file_path = 'train.txt'
+file_path = 'data.txt'
 
 with open(file_path, 'r', encoding='utf-8') as file:
     lines = file.readlines()
