@@ -13,6 +13,7 @@ import webbrowser
 import torch
 from torch import nn
 import pyautogui
+import time
 
 device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
 device = torch.device(device_type)
@@ -221,6 +222,7 @@ def main():
         print("유튜브")
         context = audio_to_text()
         run_youtube(context)
+        time.sleep(1.4)
         pyautogui.moveTo(870, 330)
         pyautogui.click()
 
