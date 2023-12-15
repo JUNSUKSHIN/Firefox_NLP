@@ -9,9 +9,9 @@
 
 ## 설치 방법
 Python 3.10.4 이상 필요
-git clone https://github.com/JUNSUKSHIN/Firefox_NLP
-pip install -r requirements.txt
-python Run_nlp.py
+ - git clone https://github.com/JUNSUKSHIN/Firefox_NLP
+ - pip install -r requirements.txt
+ - python Run_nlp.py
 
 ## 참고 링크
 - [OpenAI Whisper](https://github.com/openai/whisper)
