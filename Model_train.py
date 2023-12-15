@@ -236,3 +236,11 @@ class BERTClassifier(nn.Module):
         if self.dr_rate:
             out = self.dropout(pooler)
         return self.classifier(out)
+    
+model = BERTClassifier(bertmodel,  dr_rate = 0.5).to(device)
+
+data_train = BERTDataset(dataset_train, 0, 1, tokenizer, vocab, max_len, True, False)
+data_test = BERTDataset(dataset_test, 0, 1, tokenizer, vocab, max_len, True, False)
+
+train_dataloader = torch.utils.data.DataLoader(data_train, batch_size = batch_size, num_workers = 2)
+test_dataloader = torch.utils.data.DataLoader(data_test, batch_size = batch_size, num_workers = 2)
