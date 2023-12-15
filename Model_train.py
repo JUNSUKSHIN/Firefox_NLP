@@ -201,8 +201,8 @@ if __name__ == '__main__':
     data_train = BERTDataset(dataset_train, 0, 1, tokenizer, vocab, max_len, True, False)
     data_test = BERTDataset(dataset_test, 0, 1, tokenizer, vocab, max_len, True, False)
 
-    train_dataloader = torch.utils.data.DataLoader(data_train, batch_size = batch_size, num_workers = 2)
-    test_dataloader = torch.utils.data.DataLoader(data_test, batch_size = batch_size, num_workers = 2)
+    train_dataloader = torch.utils.data.DataLoader(data_train, batch_size = batch_size)
+    test_dataloader = torch.utils.data.DataLoader(data_test, batch_size = batch_size)
 
     no_decay = ['bias', 'LayerNorm.weight']
     optimizer_grouped_parameters = [
