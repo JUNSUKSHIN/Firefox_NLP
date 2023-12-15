@@ -244,3 +244,17 @@ data_test = BERTDataset(dataset_test, 0, 1, tokenizer, vocab, max_len, True, Fal
 
 train_dataloader = torch.utils.data.DataLoader(data_train, batch_size = batch_size, num_workers = 2)
 test_dataloader = torch.utils.data.DataLoader(data_test, batch_size = batch_size, num_workers = 2)
+
+no_decay = ['bias', 'LayerNorm.weight']
+optimizer_grouped_parameters = [
+    {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': 0.01},
+    {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
+]
+
+optimizer = AdamW(optimizer_grouped_parameters, lr = learning_rate)
+loss_fn = nn.CrossEntropyLoss() # 다중분류를 위한 loss function
+
+t_total = len(train_dataloader) * num_epochs
+warmup_step = int(t_total * warmup_ratio)
+
+scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps = warmup_step, num_training_steps = t_total)
