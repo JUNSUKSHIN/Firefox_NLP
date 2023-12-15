@@ -147,8 +147,10 @@ class BERTClassifier(nn.Module):
 model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
 model.load_state_dict(torch.load(r'C:\137\trained_model.pt', map_location=device))
 model.eval()
+print("")
+print('test_s = [["유튜브에서 노래를 찾아주겠니", "0"]]에 대한 예측')
 
-test_s = [["유튜브에 히사이시조 노래를 찾아주겠니", "0"]]
+test_s = [["유튜브에서 노래를 찾아주겠니", "0"]]
 max_len = 64  # 또는 훈련에 사용된 max_len
 batch_size = 1  # 배치 크기
 test_d = BERTDataset(test_s, 0, 1, tokenizer, vocab, max_len, True, False)
@@ -165,5 +167,6 @@ for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(tqdm(te
         logits = i
         logits = logits.detach().cpu().numpy()
         output.append(logits)
-
+print("")
 print(np.argmax(output, axis=1)) # 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브
+print("## 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브")

@@ -222,7 +222,7 @@ def main():
         print("유튜브")
         context = audio_to_text()
         run_youtube(context)
-        time.sleep(2.2)
+        time.sleep(3)
         pyautogui.moveTo(870, 330)
         pyautogui.click()
 
