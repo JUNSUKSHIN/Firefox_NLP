@@ -154,3 +154,26 @@ class BERTSentenceTransform:
 
         return np.array(input_ids, dtype='int32'), np.array(valid_length, dtype='int32'),\
             np.array(segment_ids, dtype='int32')
+    
+class BERTDataset(Dataset):
+    def __init__(self, dataset, sent_idx, label_idx, bert_tokenizer, vocab, max_len,
+                 pad, pair):
+        transform = BERTSentenceTransform(bert_tokenizer, max_seq_length=max_len,vocab=vocab, pad=pad, pair=pair)
+        #transform = nlp.data.BERTSentenceTransform(
+        #    tokenizer, max_seq_length=max_len, pad=pad, pair=pair)
+        self.sentences = [transform([i[sent_idx]]) for i in dataset]
+        self.labels = [np.int32(i[label_idx]) for i in dataset]
+
+    def __getitem__(self, i):
+        return (self.sentences[i] + (self.labels[i], ))
+
+    def __len__(self):
+        return (len(self.labels))
+    
+max_len = 100
+batch_size = 64
+warmup_ratio = 0.1
+num_epochs = 5
+max_grad_norm = 1
+log_interval = 200
+learning_rate =  5e-5
