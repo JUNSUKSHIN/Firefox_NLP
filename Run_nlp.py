@@ -4,6 +4,7 @@ import subprocess
 import whisper
 
 w_model = whisper.load_model("base")
+WAVE_OUTPUT_FILENAME = "C:\\137\\output.wav"
 
 def record_audio():
     FORMAT = pyaudio.paInt16
@@ -12,7 +13,7 @@ def record_audio():
     CHUNK = 1024
     RECORD_SECONDS = 3
     DEVICE_INDEX = 2  # 마이크 장치 인덱스
-    WAVE_OUTPUT_FILENAME = "output.wav"
+    
 
     audio = pyaudio.PyAudio()
 
@@ -49,8 +50,8 @@ def transcribe_audio(file_path):
     return result.stdout
 
 def main():
-    recorded_file = record_audio()
-    transcription = transcribe_audio(recorded_file)
+    record_audio()
+    transcription = transcribe_audio(WAVE_OUTPUT_FILENAME)
     print("변환된 텍스트:")
     print(transcription)
 
