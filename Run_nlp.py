@@ -8,6 +8,7 @@ from tqdm import tqdm
 import gluonnlp as nlp
 from kobert_tokenizer import KoBERTTokenizer
 from transformers import BertModel
+import re
 
 import torch
 from torch import nn
@@ -197,19 +198,41 @@ def transcribe_audio(file_path):
     result = subprocess.run(command, capture_output=True, text=True)
     return result.stdout
 
-def main():
+def audio_to_text():
     record_audio()
     transcription = transcribe_audio(WAVE_OUTPUT_FILENAME)
-    print("변환된 텍스트:")
-    print(transcription)
+    clean_text = re.sub(r"\[.*?\]", "", transcription).strip()
+    print(clean_text)
+    return clean_text
+
+def main():
+
+    context = audio_to_text()
+    run_nlp(context)
+
 
 def run_nlp(input_string):
 
-    test_s = [["유튜브에 히사이시조 노래를 찾아주겠니", "0"]]
+    test_s = [[input_string, "0"]]
+    print(test_s)
     max_len = 64
     batch_size = 1  
     test_d = BERTDataset(test_s, 0, 1, tokenizer, vocab, max_len, True, False)
     test_da = DataLoader(test_d, batch_size=batch_size, num_workers=0)
+
+    output = []
+    for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(tqdm(test_da)):
+        token_ids = token_ids.long().to(device)
+        segment_ids = segment_ids.long().to(device)
+        valid_length = valid_length
+        label = label.long().to(device)
+        out = model(token_ids, valid_length, segment_ids)
+        for i in out:
+            logits = i
+            logits = logits.detach().cpu().numpy()
+            output.append(logits)
+
+    print(np.argmax(output, axis=1)) # 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브
 
 if __name__ == "__main__":
     main()
