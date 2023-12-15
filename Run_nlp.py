@@ -48,3 +48,11 @@ def transcribe_audio(file_path):
     result = subprocess.run(command, capture_output=True, text=True)
     return result.stdout
 
+def main():
+    recorded_file = record_audio()
+    transcription = transcribe_audio(recorded_file)
+    print("변환된 텍스트:")
+    print(transcription)
+
+if __name__ == "__main__":
+    main()
