@@ -153,3 +153,17 @@ max_len = 64  # 또는 훈련에 사용된 max_len
 batch_size = 1  # 배치 크기
 test_d = BERTDataset(test_s, 0, 1, tokenizer, vocab, max_len, True, False)
 test_da = DataLoader(test_d, batch_size=batch_size, num_workers=0)
+
+output = []
+for batch_id, (token_ids, valid_length, segment_ids, label) in enumerate(tqdm(test_da)):
+    token_ids = token_ids.long().to(device)
+    segment_ids = segment_ids.long().to(device)
+    valid_length = valid_length
+    label = label.long().to(device)
+    out = model(token_ids, valid_length, segment_ids)
+    for i in out:
+        logits = i
+        logits = logits.detach().cpu().numpy()
+        output.append(logits)
+
+print(np.argmax(output, axis=1)) # 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브
