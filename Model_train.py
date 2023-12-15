@@ -12,3 +12,12 @@ from transformers import BertModel
 
 from transformers import AdamW
 from transformers.optimization import get_cosine_schedule_with_warmup
+
+from kobert_tokenizer import KoBERTTokenizer
+
+device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = torch.device(device_type) 
+
+tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
+bertmodel = BertModel.from_pretrained('skt/kobert-base-v1', return_dict=False)
+vocab = nlp.vocab.BERTVocab.from_sentencepiece(tokenizer.vocab_file, padding_token='[PAD]')
