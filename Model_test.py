@@ -143,3 +143,7 @@ class BERTClassifier(nn.Module):
         if self.dr_rate:
             out = self.dropout(pooler)
         return self.classifier(out)
+    
+model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
+model.load_state_dict(torch.load("C:\137\trained_model.pt", map_location=device))
+model.eval()
