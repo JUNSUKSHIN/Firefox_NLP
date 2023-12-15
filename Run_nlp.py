@@ -9,7 +9,7 @@ import gluonnlp as nlp
 from kobert_tokenizer import KoBERTTokenizer
 from transformers import BertModel
 import re
-
+import webbrowser
 import torch
 from torch import nn
 
@@ -208,7 +208,16 @@ def audio_to_text():
 def main():
 
     context = audio_to_text()
-    run_nlp(context)
+    num_n = run_nlp(context)
+    
+    if(num_n == 0):
+        print("애플TV")
+    elif(num_n == 1):
+        print("넷플릭스")
+    elif(num_n == 2):
+        print("구글")
+    else:
+        print("유튜브")
 
 
 def run_nlp(input_string):
@@ -232,7 +241,12 @@ def run_nlp(input_string):
             logits = logits.detach().cpu().numpy()
             output.append(logits)
 
-    print(np.argmax(output, axis=1)) # 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브
+    numbers = re.findall(r'\d+', str(np.argmax(output, axis=1)))
+    numbers = [int(num) for num in numbers]
+
+    print(numbers[0]) # 0 : 애플tv, 1 : 넷플릭스, 2 : 구글, 3 : 유튜브
+
+    return int(numbers[0])
 
 if __name__ == "__main__":
     main()
