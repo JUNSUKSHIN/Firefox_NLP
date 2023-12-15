@@ -4,7 +4,7 @@ import subprocess
 import whisper
 
 w_model = whisper.load_model("base")
-WAVE_OUTPUT_FILENAME = "C:\\137\\output.wav"
+WAVE_OUTPUT_FILENAME = r"C:\137\output.wav"
 
 def record_audio():
     FORMAT = pyaudio.paInt16
@@ -46,6 +46,7 @@ def record_audio():
 def transcribe_audio(file_path):
 
     command = ["whisper", file_path, "--language", "ko"]
+    print(command)
     result = subprocess.run(command, capture_output=True, text=True)
     return result.stdout
 
