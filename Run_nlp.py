@@ -2,6 +2,16 @@ import pyaudio
 import wave
 import subprocess
 import whisper
+from torch.utils.data import Dataset, DataLoader
+import numpy as np
+from tqdm import tqdm
+import gluonnlp as nlp
+from kobert_tokenizer import KoBERTTokenizer
+from transformers import BertModel
+
+import torch
+from torch import nn
+
 
 w_model = whisper.load_model("base")
 WAVE_OUTPUT_FILENAME = r"C:\137\output.wav"
