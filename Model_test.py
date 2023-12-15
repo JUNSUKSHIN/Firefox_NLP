@@ -147,3 +147,9 @@ class BERTClassifier(nn.Module):
 model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
 model.load_state_dict(torch.load("C:\137\trained_model.pt", map_location=device))
 model.eval()
+
+test_s = [["유튜브에 히사이시조 노래를 찾아주겠니", "0"]]
+max_len = 64  # 또는 훈련에 사용된 max_len
+batch_size = 1  # 배치 크기
+test_d = BERTDataset(test_s, 0, 1, tokenizer, vocab, max_len, True, False)
+test_da = DataLoader(test_d, batch_size=batch_size, num_workers=0)
