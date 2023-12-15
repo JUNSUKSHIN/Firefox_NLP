@@ -19,3 +19,22 @@ def record_audio():
 
     print("녹음 시작...")
     frames = []
+
+    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+        data = stream.read(CHUNK)
+        frames.append(data)
+
+    print("녹음 완료")
+
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+
+    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+    wf.setnchannels(CHANNELS)
+    wf.setsampwidth(audio.get_sample_size(FORMAT))
+    wf.setframerate(RATE)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+    return WAVE_OUTPUT_FILENAME
