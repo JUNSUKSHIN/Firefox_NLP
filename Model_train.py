@@ -6,6 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 import gluonnlp as nlp
 import numpy as np
 from tqdm import tqdm
+import pandas as pd
 
 from kobert_tokenizer import KoBERTTokenizer
 from transformers import BertModel
@@ -21,6 +22,7 @@ device = torch.device(device_type)
 tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
 bertmodel = BertModel.from_pretrained('skt/kobert-base-v1', return_dict=False)
 vocab = nlp.vocab.BERTVocab.from_sentencepiece(tokenizer.vocab_file, padding_token='[PAD]')
+tok = nlp.data.BERTSPTokenizer(tokenizer, vocab, lower = False)
 
 class BERTSentenceTransform:
     r"""BERT style data transformation.
@@ -169,7 +171,16 @@ class BERTDataset(Dataset):
 
     def __len__(self):
         return (len(self.labels))
-    
+
+def get_kobert_model(model_path, vocab_file, ctx="cpu"):
+    bertmodel = BertModel.from_pretrained(model_path)
+    device = torch.device(ctx)
+    bertmodel.to(device)
+    bertmodel.eval()
+    vocab_b_obj = nlp.vocab.BERTVocab.from_sentencepiece(vocab_file,
+                                                         padding_token='[PAD]')
+    return bertmodel, vocab_b_obj
+
 max_len = 100
 batch_size = 64
 warmup_ratio = 0.1
@@ -177,3 +188,4 @@ num_epochs = 5
 max_grad_norm = 1
 log_interval = 200
 learning_rate =  5e-5
+
