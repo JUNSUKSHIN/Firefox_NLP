@@ -203,7 +203,13 @@ def main():
     print("변환된 텍스트:")
     print(transcription)
 
+def run_nlp(input_string):
 
+    test_s = [["유튜브에 히사이시조 노래를 찾아주겠니", "0"]]
+    max_len = 64
+    batch_size = 1  
+    test_d = BERTDataset(test_s, 0, 1, tokenizer, vocab, max_len, True, False)
+    test_da = DataLoader(test_d, batch_size=batch_size, num_workers=0)
 
 if __name__ == "__main__":
     main()
