@@ -145,7 +145,7 @@ class BERTClassifier(nn.Module):
         return self.classifier(out)
     
 model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
-model.load_state_dict(torch.load("C:\137\trained_model.pt", map_location=device))
+model.load_state_dict(torch.load(r'C:\137\trained_model.pt', map_location=device))
 model.eval()
 
 test_s = [["유튜브에 히사이시조 노래를 찾아주겠니", "0"]]
