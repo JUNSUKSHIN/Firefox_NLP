@@ -258,3 +258,8 @@ t_total = len(train_dataloader) * num_epochs
 warmup_step = int(t_total * warmup_ratio)
 
 scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps = warmup_step, num_training_steps = t_total)
+
+def calc_accuracy(X,Y):
+    max_vals, max_indices = torch.max(X, 1)
+    train_acc = (max_indices == Y).sum().data.cpu().numpy()/max_indices.size()[0]
+    return train_acc
