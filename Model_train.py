@@ -189,3 +189,21 @@ max_grad_norm = 1
 log_interval = 200
 learning_rate =  5e-5
 
+train_df = pd.read_csv('train_data.csv')
+test_df = pd.read_csv('test_data.csv')
+
+dataset_train = []
+for q, label in zip(train_df['sentence'], train_df['target']):
+    data = []
+    data.append(q)
+    data.append(str(label))
+
+    dataset_train.append(data)
+
+dataset_test  = []
+for q, label in zip(test_df['sentence'], train_df['target']):
+    data = []
+    data.append(q)
+    data.append(str(label))
+
+    dataset_test .append(data)
