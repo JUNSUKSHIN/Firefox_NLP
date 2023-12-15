@@ -169,14 +169,14 @@ def record_audio():
                         rate=RATE, input=True, input_device_index=DEVICE_INDEX,
                         frames_per_buffer=CHUNK)
 
-    print("녹음 시작...")
+    print("듣는 중...")
     frames = []
 
     for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
         data = stream.read(CHUNK)
         frames.append(data)
 
-    print("녹음 완료")
+    print("문맥 분석중...")
 
     stream.stop_stream()
     stream.close()
@@ -218,7 +218,13 @@ def main():
         print("구글")
     else:
         print("유튜브")
+        context = audio_to_text()
+        run_youtube(context)
 
+def run_youtube(input_string):
+    
+    url = f"https://www.youtube.com/results?search_query={input_string}"
+    webbrowser.open(url)
 
 def run_nlp(input_string):
 
